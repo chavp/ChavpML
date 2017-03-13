@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace ML.Lab
 {
@@ -25,9 +27,14 @@ namespace ML.Lab
                 new Subject(5){ A = 3.5, B = 5 },
                 new Subject(6){ A = 4.5, B = 5 },
                 new Subject(7){ A = 3.5, B = 4.5 },
+                new Subject(8){ A = 6, B = 2 },
             };
 
-
+            //if (File.Exists(disCachePath))
+            //{
+            //    var dataJson = File.ReadAllText(disCachePath);
+            //    disCache = JsonConvert.DeserializeObject<Dictionary<string, double>>(dataJson);
+            //}
         }
 
         [TestMethod]
@@ -105,26 +112,39 @@ namespace ML.Lab
             }
         }
 
+        
         [TestMethod]
         public void test_FindCenter()
         {
-            var centerList = FindCenter(dataSet);
-            foreach (var center in centerList)
+            //var centerList = FindCenter(dataSet);
+            //foreach (var center in centerList)
+            //{
+            //    Console.WriteLine("{0}", center.Id);
+            //}
+
+            var subjectGroupList = BuildKMeans(dataSet);
+            foreach (var center in subjectGroupList)
             {
-                Console.WriteLine("{0}", center.Id);
+                Console.WriteLine("{0}", center.Center.Id);
+                foreach (var item in center.Members)
+                {
+                    Console.WriteLine("\t{0}", item.Id);
+                }
             }
         }
 
-
-        public IEnumerable<Subject> FindCenter(IEnumerable<Subject> dataSet)
+        public IEnumerable<SubjectGroup> BuildKMeans(IEnumerable<Subject> dataSet)
         {
             if (dataSet.Count() == 1)
             {
-                yield return dataSet.First();
+                yield return new SubjectGroup
+                {
+                    Center = dataSet.First()
+                };
             }
             else
             {
-                var dicOfAverage = dataSet.Select(center => new 
+                var dicOfAverage = dataSet.Select(center => new
                 {
                     Ditance = Distance(center, dataSet).Average(x => x.Item1),
                     Center = center
@@ -134,26 +154,54 @@ namespace ML.Lab
 
                 var grp = Distance(minDisP.Center, dataSet)
                             .Where(x => x.Item1 <= minDisP.Ditance)
-                            .Select( y => y.Item2 );
+                            .Select(y => y.Item2);
 
-                yield return minDisP.Center;
+                yield return new SubjectGroup
+                {
+                    Center = minDisP.Center,
+                    Members = grp.ToList()
+                };
 
                 var remainData = dataSet.Where(x => !grp.Contains(x) && x != minDisP.Center);
                 if (remainData.Count() > 0)
                 {
-                    foreach (var center in FindCenter(remainData))
-                    {
-                        yield return center;
-                    }
+                    foreach (var item in BuildKMeans(remainData))
+	                {
+		                 yield return item;
+	                }
                 }
             }
         }
 
+        private string disCachePath = @"D:\mybooks\book\ML\ChavpML\disChache.json";
+        private Dictionary<string, double> disCache = new Dictionary<string, double>();
         public IEnumerable<Tuple<double, Subject>> Distance(Subject center, IEnumerable<Subject> dataSet)
         {
             foreach (var p in dataSet.Where(x => x != center))
             {
+                //string key = getKey(center.Id, p.Id);
+                //if (!disCache.ContainsKey(key))
+                //{
+                //    disCache.Add(key, center.DistanceTo(p));
+
+                //    //var disSave = Newtonsoft.Json.JsonConvert.SerializeObject(disCache);
+                //    //File.WriteAllText(disCachePath, disSave);
+                //}
+                //yield return disCache[key];
                 yield return new Tuple<double, Subject>(center.DistanceTo(p), p);
+            }
+        }
+
+        private string getKey(int id1, int id2)
+        {
+            string keyFormat = "{0}-{1}";
+            if (id1 < id2)
+            {
+                return string.Format(keyFormat, id1, id2);
+            }
+            else
+            {
+                return string.Format(keyFormat, id2, id1);
             }
         }
     }
@@ -172,8 +220,23 @@ namespace ML.Lab
         public double DistanceTo(Subject to)
         {
             // Euclidean distance measure
-            return Math.Sqrt(Math.Pow(A - to.A, 2) + Math.Pow(B - to.B, 2));
+            return Math.Sqrt(new List<double>
+            {
+                Math.Pow(A - to.A, 2),
+                Math.Pow(B - to.B, 2)
+            }.Sum());
         }
+    }
+
+    public class SubjectGroup
+    {
+        public SubjectGroup()
+        {
+            Members = new List<Subject>();
+        }
+
+        public Subject Center { get; set; }
+        public List<Subject> Members { get; set; }
     }
 
     public abstract class PositionBase
