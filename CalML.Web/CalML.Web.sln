@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalML.Web", "CalML.Web\CalML.Web.csproj", "{8655ED76-B779-4466-9E05-788B7CB27E64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ML.Lab", "ML.Lab\ML.Lab.csproj", "{6A300C26-5470-4D05-A171-14CDF670FEFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8655ED76-B779-4466-9E05-788B7CB27E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8655ED76-B779-4466-9E05-788B7CB27E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8655ED76-B779-4466-9E05-788B7CB27E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8655ED76-B779-4466-9E05-788B7CB27E64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A300C26-5470-4D05-A171-14CDF670FEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A300C26-5470-4D05-A171-14CDF670FEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A300C26-5470-4D05-A171-14CDF670FEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A300C26-5470-4D05-A171-14CDF670FEFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

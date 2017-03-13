@@ -1,0 +1,4 @@
+D:\mybooks\book\ML\CalML\CalML.Web\ML.Lab\bin\Debug\ML.Lab.dll
+D:\mybooks\book\ML\CalML\CalML.Web\ML.Lab\bin\Debug\ML.Lab.pdb
+D:\mybooks\book\ML\CalML\CalML.Web\ML.Lab\obj\Debug\ML.Lab.dll
+D:\mybooks\book\ML\CalML\CalML.Web\ML.Lab\obj\Debug\ML.Lab.pdb
